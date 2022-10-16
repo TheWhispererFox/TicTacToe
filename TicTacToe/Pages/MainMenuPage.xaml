@@ -17,9 +17,9 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" TextAlignment="Center" VerticalAlignment="Center" FontSize="32" Text="Крестики-нолики" />
-        <Button Grid.Row="1" MinHeight="50" Content="Player vs Player" />
-        <Button Grid.Row="2" MinHeight="50" Content="Player vs Computer" />
-        <Button Grid.Row="3" MinHeight="50" Content="Computer vs Computer" />
-        <Button Grid.Row="4" MinHeight="50" Content="Exit" Command="Close" IsCancel="True" />
+        <Button Grid.Row="1" Margin="15" MinHeight="50" Content="Player vs Player" Click="PvPBtn_Click" />
+        <Button Grid.Row="2" Margin="15" MinHeight="50" Content="Player vs Computer" Click="PvCBtn_Click" />
+        <Button Grid.Row="3" Margin="15" MinHeight="50" Content="Computer vs Computer" Click="CvCBtn_Click" />
+        <Button Grid.Row="4" Margin="15" MinHeight="50" Content="Exit" Command="Close" IsCancel="True" />
     </Grid>
 </Page>

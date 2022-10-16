@@ -24,5 +24,20 @@ namespace TicTacToe
         {
             InitializeComponent();
         }
+
+        private void PvPBtn_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate("Pages/BoardSizePage.xaml");
+        }
+
+        private void PvCBtn_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate("Pages/BoardSizePage.xaml");
+        }
+
+        private void CvCBtn_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate("Pages/BoardSizePage.xaml");
+        }
     }
 }
