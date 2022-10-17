@@ -13,6 +13,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using TicTacToe.Models;
+using TicTacToe.Pages;
+
 namespace TicTacToe
 {
     /// <summary>
@@ -20,24 +23,41 @@ namespace TicTacToe
     /// </summary>
     public partial class MainMenuPage : Page
     {
+        private GameBoard.Size size;
+        private GameManager.GameMode gameMode;
         public MainMenuPage()
         {
             InitializeComponent();
         }
 
-        private void PvPBtn_Click(object sender, RoutedEventArgs e)
+        private void PlayBtn_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate("Pages/BoardSizePage.xaml");
+            NavigationService.Navigate(new GameViewPage(new GameManager(size, gameMode)));
         }
 
-        private void PvCBtn_Click(object sender, RoutedEventArgs e)
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate("Pages/BoardSizePage.xaml");
-        }
-
-        private void CvCBtn_Click(object sender, RoutedEventArgs e)
-        {
-            NavigationService.Navigate("Pages/BoardSizePage.xaml");
+            RadioButton radioButton = (RadioButton)sender;
+            if (radioButton.GroupName == "Gamemode")
+            {
+                gameMode = radioButton.Content switch
+                {
+                    "PvP" => GameManager.GameMode.PvP,
+                    "PvC" => GameManager.GameMode.PvC,
+                    "CvC" => GameManager.GameMode.CvC,
+                    _ => GameManager.GameMode.PvC,
+                };
+            }
+            else
+            {
+                size = radioButton.Content switch
+                {
+                    "Small (3x3)" => GameBoard.Size.Small,
+                    "Medium (4x4)" => GameBoard.Size.Medium,
+                    "Large (5x5)" => GameBoard.Size.Large,
+                    _ => GameBoard.Size.Small,
+                };
+            }
         }
     }
 }
