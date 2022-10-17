@@ -27,10 +27,5 @@ namespace TicTacToe.Pages
             InitializeComponent();
             this.manager = manager;
         }
-
-        private void LeaveBtn_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }
