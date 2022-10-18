@@ -50,6 +50,31 @@ namespace TicTacToe.Models
             }
         }
 
+        public bool DoTurn(int slot)
+        {
+            if (Board.Slots[slot] != GameBoard.Slot.Empty) return false;
+            if (IsWinning(Board, GameBoard.Slot.X))
+            {
+                State = GameState.XWin;
+                return false;
+            } else if (IsWinning(Board, GameBoard.Slot.O))
+            {
+                State = GameState.OWin;
+                return false;
+            }
+            if (State == GameState.XTurn)
+            {
+                Board.Slots[slot] = GameBoard.Slot.X;
+                State = GameState.OTurn;
+            }
+            else
+            {
+                Board.Slots[slot] = GameBoard.Slot.O;
+                State = GameState.XTurn;
+            }
+            return true;
+        }
+
         public bool IsWinning(GameBoard board, GameBoard.Slot player)
         {
             bool winning = true;
