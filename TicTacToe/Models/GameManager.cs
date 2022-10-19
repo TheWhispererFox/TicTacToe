@@ -33,23 +33,6 @@ namespace TicTacToe.Models
             Mode = mode;
         }
 
-        private static GameManager? instance;
-
-        public static GameManager? Instance
-        {
-            get
-            {
-                return instance;
-            }
-            set
-            {
-                if (instance == null)
-                {
-                    instance = value;
-                }
-            }
-        }
-
         public void DoTurn(int slot, Action onSuccessfulTurn)
         {
             if (Board.Slots[slot] != GameBoard.Slot.Empty) return;
@@ -74,7 +57,7 @@ namespace TicTacToe.Models
             }
         }
 
-        public bool IsWinning(GameBoard board, GameBoard.Slot player)
+        public static bool IsWinning(GameBoard board, GameBoard.Slot player)
         {
             bool winning = true;
             int size = ((int)board.BoardSize);
