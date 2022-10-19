@@ -24,8 +24,8 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <RadioButton GroupName="Gamemode" Content="PvP" HorizontalAlignment="Center" VerticalAlignment="Center" Checked="RadioButton_Checked" />
-            <RadioButton GroupName="Gamemode" Content="PvC" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" />
-            <RadioButton GroupName="Gamemode" Content="CvC" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="2" />
+            <RadioButton GroupName="Gamemode" Content="PvC" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Checked="RadioButton_Checked" />
+            <RadioButton GroupName="Gamemode" Content="CvC" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="2" Checked="RadioButton_Checked" />
         </Grid>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
@@ -33,9 +33,9 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <RadioButton GroupName="BoardSize" Content="Small (3x3)" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" />
-            <RadioButton GroupName="BoardSize" Content="Medium (4x4)" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" />
-            <RadioButton GroupName="BoardSize" Content="Large (5x5)" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <RadioButton GroupName="BoardSize" Content="Small (3x3)" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Checked="RadioButton_Checked" />
+            <RadioButton GroupName="BoardSize" Content="Medium (4x4)" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Checked="RadioButton_Checked" />
+            <RadioButton GroupName="BoardSize" Content="Large (5x5)" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Checked="RadioButton_Checked" />
         </Grid>
         <Button Grid.Row="3" Margin="15" MinHeight="50" Content="Play" IsDefault="True" Click="PlayBtn_Click" />
         <Button Grid.Row="4" Margin="15" MinHeight="50" Content="Exit" Command="Close" IsCancel="True" />
