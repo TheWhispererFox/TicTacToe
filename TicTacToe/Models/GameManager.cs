@@ -50,29 +50,28 @@ namespace TicTacToe.Models
             }
         }
 
-        public bool DoTurn(int slot)
+        public void DoTurn(int slot, Action onSuccessfulTurn)
         {
-            if (Board.Slots[slot] != GameBoard.Slot.Empty) return false;
-            if (IsWinning(Board, GameBoard.Slot.X))
-            {
-                State = GameState.XWin;
-                return false;
-            } else if (IsWinning(Board, GameBoard.Slot.O))
-            {
-                State = GameState.OWin;
-                return false;
-            }
+            if (Board.Slots[slot] != GameBoard.Slot.Empty) return;
             if (State == GameState.XTurn)
             {
                 Board.Slots[slot] = GameBoard.Slot.X;
+                onSuccessfulTurn?.Invoke();
                 State = GameState.OTurn;
             }
             else
             {
                 Board.Slots[slot] = GameBoard.Slot.O;
+                onSuccessfulTurn?.Invoke();
                 State = GameState.XTurn;
             }
-            return true;
+            if (IsWinning(Board, GameBoard.Slot.X))
+            {
+                State = GameState.XWin;
+            } else if (IsWinning(Board, GameBoard.Slot.O))
+            {
+                State = GameState.OWin;
+            }
         }
 
         public bool IsWinning(GameBoard board, GameBoard.Slot player)
@@ -83,24 +82,22 @@ namespace TicTacToe.Models
             // Check for row combinations
             for (int i = 0; i < size; i++)
             {
-                for (int j = i; j < size + i; j++)
+                for (int j = 0; j < size; j++)
                 {
-                    winning &= board.Slots[j] == player;
+                    winning &= board.Slots[j + i * size] == player;
                 }
+                if (!winning) { winning = true; } else { return true; }
             }
-            if (winning) return true;
-            winning = true;
 
             // Check for column combinations
             for (int i = 0; i < size; i++)
             {
-                for (int j = i; j < size * size; j += size)
+                for (int j = 0; j < size; j++)
                 {
-                    winning &= board.Slots[j] == player;
+                    winning &= board.Slots[i + j * size] == player;
                 }
+                if (!winning) { winning = true; } else { return true; }
             }
-            if (winning) return true;
-            winning = true;
 
             // Check for diagonal combinations left to right
             for (int i = 0; i < size * size; i += size + 1)
@@ -111,34 +108,12 @@ namespace TicTacToe.Models
             winning = true;
 
             // Check for diagonal combinations right to left
-            for (int i = 0; i < size * size; i += size - 1)
+            for (int i = size - 1; i < size * size - (size - 2); i += size - 1)
             {
                 winning &= board.Slots[i] == player;
             }
             if (winning) return true;
             return false;
-
-            // Euristic solution
-
-            //switch (board.BoardSize)
-            //{
-            //    case GameBoard.Size.Small:
-            //        return  (board.Slots[0] == player && board.Slots[1] == player && board.Slots[2] == player) ||
-            //                (board.Slots[3] == player && board.Slots[4] == player && board.Slots[5] == player) ||
-            //                (board.Slots[6] == player && board.Slots[7] == player && board.Slots[8] == player) ||
-            //                (board.Slots[0] == player && board.Slots[3] == player && board.Slots[6] == player) ||
-            //                (board.Slots[1] == player && board.Slots[4] == player && board.Slots[7] == player) ||
-            //                (board.Slots[2] == player && board.Slots[5] == player && board.Slots[8] == player) ||
-            //                (board.Slots[0] == player && board.Slots[4] == player && board.Slots[8] == player) ||
-            //                (board.Slots[2] == player && board.Slots[4] == player && board.Slots[6] == player);
-            //    case GameBoard.Size.Medium:
-            //        return (board.Slots[0] == player && board.Slots[1] == player && board.Slots[2] == player && board.Slots[3])
-            //        break;
-            //    case GameBoard.Size.Large:
-            //        break;
-            //    default:
-            //        break;
-            //}
         }
     }
 }
