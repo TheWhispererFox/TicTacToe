@@ -10,12 +10,14 @@
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition />
             <RowDefinition Height="6*" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Grid x:Name="GameGrid" Grid.Row="0" />
+        <TextBlock x:Name="StateText" Text="Player 1 Turn" FontSize="32" VerticalAlignment="Center" HorizontalAlignment="Center" />
+        <Grid x:Name="GameGrid" Grid.Row="1" />
 
-        <Button Content="Leave" Grid.Row="1" Margin="15" Command="BrowseBack" />
+        <Button Content="Leave" Grid.Row="2" Margin="15" Command="BrowseBack" />
         <Grid Grid.Row="1"/>
     </Grid>
 </Page>

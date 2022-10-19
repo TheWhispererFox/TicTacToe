@@ -21,11 +21,70 @@ namespace TicTacToe.Pages
     /// </summary>
     public partial class GameViewPage : Page
     {
-        private GameManager manager;
+        private readonly GameManager manager;
+        private readonly List<Button> buttons;
         public GameViewPage(GameManager manager)
         {
             InitializeComponent();
+            buttons = new List<Button>();
             this.manager = manager;
+            int size = manager.Board.BoardSize switch
+            {
+                GameBoard.Size.Small => 3,
+                GameBoard.Size.Medium => 4,
+                GameBoard.Size.Large => 5,
+                _ => 3,
+            };
+            for (int i = 0; i < size; i++)
+            {
+                GameGrid.RowDefinitions.Add(new RowDefinition());
+                GameGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            }
+            for (int i = 0; i < size; i++)
+            {
+                for (int j = 0; j < size; j++)
+                {
+                    Button btn = new();
+                    buttons.Add(btn);
+                    btn.Click += Btn_Click;
+                    Grid.SetRow(btn, i);
+                    Grid.SetColumn(btn, j);
+                    GameGrid.Children.Add(btn);
+                }
+            }
+            StateText.Text = manager.State switch
+            {
+                GameManager.GameState.XTurn => "TURN X",
+                GameManager.GameState.OTurn => "TURN O",
+                GameManager.GameState.OWin => "WIN O",
+                GameManager.GameState.XWin => "WIN X",
+                GameManager.GameState.Tie => "DRAW",
+                _ => "Unknown State",
+            };
+        }
+
+        private void Btn_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is not Button button) return;
+            manager.DoTurn(buttons.IndexOf(button), () =>
+           {
+               button.Content = manager.State switch
+               {
+                   GameManager.GameState.XTurn => "X",
+                   GameManager.GameState.OTurn => "O",
+                   _ => "?",
+               };
+           });
+            StateText.Text = manager.State switch
+            {
+                GameManager.GameState.XTurn => "TURN X",
+                GameManager.GameState.OTurn => "TURN O",
+                GameManager.GameState.OWin => "WIN O",
+                GameManager.GameState.XWin => "WIN X",
+                GameManager.GameState.Tie => "DRAW",
+                _ => "Unknown State",
+            };
+            
         }
     }
 }
