@@ -23,29 +23,60 @@ namespace TicTacToe.Models
             CvC,
         }
 
-        public GameState State { get; set; } = GameState.XTurn;
+        public event Action<GameManager> StateChanged;
+        public event Action<int> BoardChanged;
+
+        private GameState state = GameState.XTurn;
+        public GameState State 
+        { 
+            get 
+            {
+                return state;
+            } 
+            set 
+            { 
+                state = value;
+                StateChanged?.Invoke(this);
+            }
+        }
         public GameMode Mode { get; set; } = GameMode.PvP;
 
         public GameBoard Board { get; }
-        public GameManager(GameBoard.Size size, GameMode mode)
+
+        public ComputerPlayer? ComputerPlayer { get; }
+        public GameManager(GameBoard.Size size, GameMode mode, bool isHumanFirst = true)
         {
             Board = new GameBoard(size);
             Mode = mode;
+            switch (mode)
+            {
+                case GameMode.PvP:
+                    ComputerPlayer = null;
+                    break;
+                case GameMode.PvC:
+                    ComputerPlayer = new ComputerPlayer(isHumanFirst ? GameBoard.Slot.O : GameBoard.Slot.X, isHumanFirst ? GameBoard.Slot.X : GameBoard.Slot.O);
+                    StateChanged += ComputerPlayer.ComputerTurn;
+                    break;
+                case GameMode.CvC:
+                    break;
+                default:
+                    break;
+            }
         }
 
-        public void DoTurn(int slot, Action onSuccessfulTurn)
+        public void DoTurn(int slot)
         {
             if (Board.Slots[slot] != GameBoard.Slot.Empty) return;
             if (State == GameState.XTurn)
             {
                 Board.Slots[slot] = GameBoard.Slot.X;
-                onSuccessfulTurn?.Invoke();
+                BoardChanged?.Invoke(slot);
                 State = GameState.OTurn;
             }
             else
             {
                 Board.Slots[slot] = GameBoard.Slot.O;
-                onSuccessfulTurn?.Invoke();
+                BoardChanged?.Invoke(slot);
                 State = GameState.XTurn;
             }
             if (IsWinning(Board, GameBoard.Slot.X))
