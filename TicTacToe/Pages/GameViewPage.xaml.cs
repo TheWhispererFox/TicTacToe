@@ -28,6 +28,7 @@ namespace TicTacToe.Pages
             InitializeComponent();
             buttons = new List<Button>();
             this.manager = manager;
+            manager.BoardChanged += OnBoardChanged;
             int size = manager.Board.BoardSize switch
             {
                 GameBoard.Size.Small => 3,
@@ -35,6 +36,7 @@ namespace TicTacToe.Pages
                 GameBoard.Size.Large => 5,
                 _ => 3,
             };
+
             for (int i = 0; i < size; i++)
             {
                 GameGrid.RowDefinitions.Add(new RowDefinition());
@@ -52,29 +54,23 @@ namespace TicTacToe.Pages
                     GameGrid.Children.Add(btn);
                 }
             }
-            StateText.Text = manager.State switch
-            {
-                GameManager.GameState.XTurn => "TURN X",
-                GameManager.GameState.OTurn => "TURN O",
-                GameManager.GameState.OWin => "WIN O",
-                GameManager.GameState.XWin => "WIN X",
-                GameManager.GameState.Tie => "DRAW",
-                _ => "Unknown State",
-            };
         }
 
         private void Btn_Click(object sender, RoutedEventArgs e)
         {
             if (sender is not Button button) return;
-            manager.DoTurn(buttons.IndexOf(button), () =>
-           {
-               button.Content = manager.State switch
-               {
-                   GameManager.GameState.XTurn => "X",
-                   GameManager.GameState.OTurn => "O",
-                   _ => "?",
-               };
-           });
+            manager.DoTurn(buttons.IndexOf(button));
+        }
+
+        // Used for UI update
+        private void OnBoardChanged(int index)
+        {
+            buttons[index].Content = manager.State switch
+            {
+                GameManager.GameState.XTurn => "X",
+                GameManager.GameState.OTurn => "O",
+                _ => "?",
+            };
             StateText.Text = manager.State switch
             {
                 GameManager.GameState.XTurn => "TURN X",
@@ -84,7 +80,6 @@ namespace TicTacToe.Pages
                 GameManager.GameState.Tie => "DRAW",
                 _ => "Unknown State",
             };
-            
         }
     }
 }
