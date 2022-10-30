@@ -98,6 +98,11 @@ namespace TicTacToe.Models
                 State = GameState.OWin;
                 return true;
             }
+            else if (Board.Slots.All(s => s != GameBoard.Slot.Empty))
+            {
+                State = GameState.Tie;
+                return true;
+            }
             return false;
         }
 
