@@ -66,6 +66,10 @@ namespace TicTacToe.Models
 
         public void DoTurn(int slot)
         {
+            if (CheckWinCondition())
+            {
+                return;
+            }
             if (Board.Slots[slot] != GameBoard.Slot.Empty) return;
             if (State == GameState.XTurn)
             {
@@ -79,13 +83,22 @@ namespace TicTacToe.Models
                 BoardChanged?.Invoke(slot);
                 State = GameState.XTurn;
             }
+            CheckWinCondition();
+        }
+
+        public bool CheckWinCondition()
+        {
             if (IsWinning(Board, GameBoard.Slot.X))
             {
                 State = GameState.XWin;
-            } else if (IsWinning(Board, GameBoard.Slot.O))
+                return true;
+            }
+            else if (IsWinning(Board, GameBoard.Slot.O))
             {
                 State = GameState.OWin;
+                return true;
             }
+            return false;
         }
 
         public static bool IsWinning(GameBoard board, GameBoard.Slot player)
