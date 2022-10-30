@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TicTacToe.Models
 {
-    public class GameBoard
+    public class GameBoard : ICloneable
     {
         public enum Size
         {
@@ -21,7 +21,7 @@ namespace TicTacToe.Models
             O,
         }
         public Size BoardSize { get; set; }
-        private readonly Slot[] slots;
+        private Slot[] slots;
         public Slot[] Slots { get { return slots; } }
         
         public GameBoard(Size size)
@@ -43,6 +43,11 @@ namespace TicTacToe.Models
                     slots = new Slot[9];
                     break;
             }
+        }
+
+        public object Clone()
+        {
+            return new GameBoard(BoardSize) { slots = (Slot[])slots.Clone() };
         }
     }
 }
