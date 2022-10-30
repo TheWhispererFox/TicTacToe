@@ -29,6 +29,7 @@ namespace TicTacToe.Pages
             buttons = new List<Button>();
             this.manager = manager;
             manager.BoardChanged += OnBoardChanged;
+            manager.StateChanged += OnStateChanged;
             int size = manager.Board.BoardSize switch
             {
                 GameBoard.Size.Small => 3,
@@ -56,21 +57,8 @@ namespace TicTacToe.Pages
             }
         }
 
-        private void Btn_Click(object sender, RoutedEventArgs e)
+        private void OnStateChanged(GameManager obj)
         {
-            if (sender is not Button button) return;
-            manager.DoTurn(buttons.IndexOf(button));
-        }
-
-        // Used for UI update
-        private void OnBoardChanged(int index)
-        {
-            buttons[index].Content = manager.State switch
-            {
-                GameManager.GameState.XTurn => "X",
-                GameManager.GameState.OTurn => "O",
-                _ => "?",
-            };
             StateText.Text = manager.State switch
             {
                 GameManager.GameState.XTurn => "TURN X",
@@ -79,6 +67,22 @@ namespace TicTacToe.Pages
                 GameManager.GameState.XWin => "WIN X",
                 GameManager.GameState.Tie => "DRAW",
                 _ => "Unknown State",
+            };
+        }
+
+        private void Btn_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is not Button button) return;
+            manager.DoTurn(buttons.IndexOf(button));
+        }
+
+        private void OnBoardChanged(int index)
+        {
+            buttons[index].Content = manager.State switch
+            {
+                GameManager.GameState.XTurn => "X",
+                GameManager.GameState.OTurn => "O",
+                _ => "?",
             };
         }
     }
